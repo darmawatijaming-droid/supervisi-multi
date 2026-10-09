@@ -7,6 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Library SheetJS untuk Export Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
         body { font-family: 'Inter', system-ui, sans-serif; background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%); min-height: 100vh; }
         .tab-active { border-bottom: 3px solid #2563eb; color: #2563eb; font-weight: 700; background: #eff6ff; border-radius: 8px 8px 0 0; }
@@ -25,6 +27,8 @@
         .btn-orange:hover { background: linear-gradient(135deg, #c2410c 0%, #9a3412 100%); transform: translateY(-1px); }
         .btn-purple { background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%); transition: all 0.2s; }
         .btn-purple:hover { background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3); }
+        .btn-excel { background: linear-gradient(135deg, #059669 0%, #047857 100%); transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 4px; }
+        .btn-excel:hover { background: linear-gradient(135deg, #047857 0%, #065f46 100%); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3); }
         textarea:focus, input:focus, select:focus { outline: none; border-color: #3b82f6 !important; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); }
         .badge-blue { background: #dbeafe; color: #1d4ed8; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; }
         .badge-green { background: #d1fae5; color: #065f46; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; }
@@ -74,6 +78,23 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
         .alert-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 12px; border-radius: 0 8px 8px 0; font-size: 12px; color: #78350f; margin-bottom: 12px; }
         .alert-box code { background: #fff7ed; padding: 2px 6px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 11px; }
+        
+        /* === STYLE TAMBAHAN UNTUK FORM A, B, C, DAN MODUL AJAR === */
+        .form-label { font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px; display: block; }
+        .form-input { width: 100%; font-size: 13px; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px 12px; background: white; transition: 0.2s; }
+        .form-input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); outline: none; }
+        .form-input[readonly] { background: #f8fafc; color: #64748b; }
+        .form-card { background: white; border: 1px solid #dbeafe; border-radius: 16px; padding: 20px; box-shadow: 0 2px 4px rgba(37, 99, 235, 0.05); }
+        .form-section-title { display: flex; align-items: center; gap: 8px; font-weight: 700; color: #1e40af; font-size: 14px; margin-bottom: 12px; }
+        .form-section-title i { color: #2563eb; }
+        .upload-area { border: 2px dashed #93c5fd; border-radius: 12px; padding: 20px; text-align: center; background: #f8fafc; transition: 0.2s; cursor: pointer; }
+        .upload-area:hover { border-color: #2563eb; background: #eff6ff; }
+        .upload-area i { font-size: 24px; color: #2563eb; margin-bottom: 8px; }
+        .upload-area p { font-size: 12px; color: #64748b; }
+        .file-preview { display: flex; align-items: center; gap: 10px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 10px; margin-top: 10px; }
+        .file-preview i { color: #2563eb; font-size: 18px; }
+        .file-preview span { font-size: 12px; color: #1e40af; font-weight: 600; flex: 1; }
+        
         @media print { .no-print { display: none !important; } body { background: white; } .card-blue { box-shadow: none; border: 1px solid #e5e7eb; } }
     </style>
 </head>
@@ -263,6 +284,16 @@
                                 <div class="border-l-4 border-blue-500 pl-4"><label class="text-sm font-semibold">2. Tujuan Pembelajaran</label><div class="readonly-panel mt-2"><div class="value" id="view_c2"><span class="empty">Belum diisi.</span></div></div></div>
                                 <div class="border-l-4 border-blue-500 pl-4"><label class="text-sm font-semibold">3. Strategi</label><div class="readonly-panel mt-2"><div class="value" id="view_c3"><span class="empty">Belum diisi.</span></div></div></div>
                             </div>
+                            <!-- MODUL AJAR SECTION FOR OBSERVER -->
+                            <div class="card-blue p-5 mt-4">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="badge-blue">Lampiran</span>
+                                    <h3 class="font-bold">Modul Ajar (PDF)</h3>
+                                </div>
+                                <div id="observerModulAjarView">
+                                    <p class="text-xs text-gray-500 italic">Memuat...</p>
+                                </div>
+                            </div>
                             <button onclick="updateStatusSesi('observasi')" class="btn-primary mt-5 w-full text-white py-3 rounded-xl text-sm font-semibold">Lanjut ke Observasi</button>
                         </div>
                     </div>
@@ -429,48 +460,143 @@
                 <button onclick="switchGuruMenu('pra')" id="gmenu-pra" class="px-5 py-3 text-sm tab-inactive whitespace-nowrap"><i class="fas fa-clipboard-list mr-1"></i> Pra-Obs</button>
                 <button onclick="switchGuruMenu('pasca')" id="gmenu-pasca" class="px-5 py-3 text-sm tab-inactive whitespace-nowrap"><i class="fas fa-comments mr-1"></i> Pasca</button>
                 <button onclick="switchGuruMenu('rtl')" id="gmenu-rtl" class="px-5 py-3 text-sm tab-inactive whitespace-nowrap"><i class="fas fa-tasks mr-1"></i> RTL</button>
+                <button onclick="switchGuruMenu('modul')" id="gmenu-modul" class="px-5 py-3 text-sm tab-inactive whitespace-nowrap"><i class="fas fa-file-pdf mr-1"></i> Modul Ajar</button>
             </div>
 
+            <!-- FORM A (IDENTITAS) -->
             <div id="gcontent-identitas" class="gmenu-content">
-                <div class="card-blue p-5 mb-4">
-                    <h2 class="text-sm font-bold uppercase mb-4">Form A: Identitas</h2>
-                    <div class="bg-blue-50 p-3 rounded-lg mb-4"><p class="text-xs text-gray-500 mb-1">Username:</p><p class="username-badge" id="guruUsernameBadge">-</p></div>
-                    <form id="formA" onsubmit="saveFormA(event)" class="space-y-3">
-                        <input type="text" id="faNama" required class="w-full text-sm border border-blue-200 rounded-lg p-3 bg-gray-50" placeholder="Nama">
-                        <div class="grid grid-cols-2 gap-3"><input type="text" id="faNip" class="w-full text-sm border border-blue-200 rounded-lg p-3" placeholder="NIP"><input type="text" id="faMapel" required class="w-full text-sm border border-blue-200 rounded-lg p-3" placeholder="Mapel"></div>
-                        <div class="grid grid-cols-2 gap-3"><input type="text" id="faKelas" required class="w-full text-sm border border-blue-200 rounded-lg p-3" placeholder="Kelas"><input type="text" id="faMateri" class="w-full text-sm border border-blue-200 rounded-lg p-3" placeholder="Materi"></div>
-                        <div class="grid grid-cols-2 gap-3"><input type="date" id="faTanggal" class="w-full text-sm border border-blue-200 rounded-lg p-3"><input type="text" id="faAlokasi" class="w-full text-sm border border-blue-200 rounded-lg p-3" placeholder="Alokasi"></div>
-                        <input type="text" id="faJadwal" class="w-full text-sm border border-blue-200 rounded-lg p-3" placeholder="Jadwal Observasi">
-                        <input type="text" id="faObserver" readonly class="w-full text-sm border border-blue-200 rounded-lg p-3 bg-white">
-                        <input type="text" id="faFokus" value="Pembelajaran Mendalam (Deep Learning)" class="w-full text-sm border border-blue-200 rounded-lg p-3">
-                        <button type="submit" class="btn-primary w-full text-white py-3 rounded-xl text-sm font-semibold">Simpan</button>
+                <div class="form-card">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="bg-blue-100 p-2 rounded-lg"><i class="fas fa-id-card text-blue-600"></i></div>
+                        <h2 class="text-sm font-bold uppercase text-blue-800">Form A: Identitas & Kesepakatan</h2>
+                    </div>
+                    <div class="bg-blue-50 p-3 rounded-lg mb-4 flex justify-between items-center">
+                        <div>
+                            <p class="text-xs text-gray-500 mb-1">Username Login Anda:</p>
+                            <p class="username-badge" id="guruUsernameBadge">-</p>
+                        </div>
+                        <i class="fas fa-user-circle text-blue-400 text-2xl"></i>
+                    </div>
+                    <form id="formA" onsubmit="saveFormA(event)" class="space-y-4">
+                        <div>
+                            <label class="form-label">Nama Pendidik *</label>
+                            <input type="text" id="faNama" required class="form-input bg-gray-50" placeholder="Nama Lengkap">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="form-label">NIP</label>
+                                <input type="text" id="faNip" class="form-input" placeholder="NIP">
+                            </div>
+                            <div>
+                                <label class="form-label">Mata Pelajaran *</label>
+                                <input type="text" id="faMapel" required class="form-input" placeholder="Contoh: Matematika">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="form-label">Kelas / Semester *</label>
+                                <input type="text" id="faKelas" required class="form-input" placeholder="Contoh: VIII / Ganjil">
+                            </div>
+                            <div>
+                                <label class="form-label">Materi / Topik</label>
+                                <input type="text" id="faMateri" class="form-input" placeholder="Contoh: Persamaan Linear">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="form-label">Hari / Tanggal Pra-Obs</label>
+                                <input type="date" id="faTanggal" class="form-input">
+                            </div>
+                            <div>
+                                <label class="form-label">Alokasi Waktu</label>
+                                <input type="text" id="faAlokasi" class="form-input" placeholder="Contoh: 2 x 40 menit">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="form-label">Jadwal Observasi Kelas</label>
+                            <input type="text" id="faJadwal" class="form-input" placeholder="Contoh: Senin, 10:00 - 11:20 WITA">
+                        </div>
+                        <div>
+                            <label class="form-label">Observer / Kepala Sekolah</label>
+                            <input type="text" id="faObserver" readonly class="form-input bg-gray-100">
+                        </div>
+                        <div>
+                            <label class="form-label">Fokus Utama Coaching</label>
+                            <input type="text" id="faFokus" value="Pembelajaran Mendalam (Deep Learning)" class="form-input">
+                        </div>
+                        <button type="submit" class="btn-primary w-full text-white py-3 rounded-xl text-sm font-semibold mt-4">
+                            <i class="fas fa-save mr-2"></i> Simpan Identitas
+                        </button>
                     </form>
                 </div>
-                <div class="card-blue p-5"><h3 class="font-bold mb-3">Status</h3><div id="guruStatusInfo"></div></div>
+                <div class="card-blue p-5 mt-4"><h3 class="font-bold mb-3">Status</h3><div id="guruStatusInfo"></div></div>
             </div>
 
+            <!-- FORM B & C (PRA-OBS) -->
             <div id="gcontent-pra" class="gmenu-content hidden">
-                <div class="card-blue p-5 mb-4">
-                    <span class="badge-blue">Form B</span><h3 class="font-bold mb-3 mt-2">Telaah Mandiri</h3>
-                    <div class="space-y-3">
-                        <div class="border border-blue-100 rounded-xl p-4 bg-blue-50/30"><p class="text-sm font-semibold text-blue-800 mb-2">1. Tujuan - Apresiasi</p><textarea id="guruB1a" class="w-full text-sm border border-blue-200 rounded-lg p-3 bg-white" rows="3"></textarea></div>
-                        <div class="border border-blue-100 rounded-xl p-4 bg-blue-50/30"><p class="text-sm font-semibold text-blue-800 mb-2">1b. Pengayaan</p><textarea id="guruB1b" class="w-full text-sm border border-blue-200 rounded-lg p-3 bg-white" rows="3"></textarea></div>
-                        <div class="border border-blue-100 rounded-xl p-4 bg-blue-50/30"><p class="text-sm font-semibold text-blue-800 mb-2">2. Alur Pengalaman</p><textarea id="guruB2" class="w-full text-sm border border-blue-200 rounded-lg p-3 bg-white" rows="3"></textarea></div>
-                        <div class="border border-blue-100 rounded-xl p-4 bg-blue-50/30"><p class="text-sm font-semibold text-blue-800 mb-2">3. Prinsip Mendalam</p><textarea id="guruB3" class="w-full text-sm border border-blue-200 rounded-lg p-3 bg-white" rows="3"></textarea></div>
+                <!-- FORM B -->
+                <div class="form-card mb-4">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="badge-blue">Form B</span>
+                        <h3 class="font-bold text-blue-800">Telaah Mandiri Perencanaan (Modul Ajar/RPP)</h3>
                     </div>
-                    <button onclick="saveFormBGuru()" class="btn-primary mt-4 w-full text-white py-3 rounded-xl text-sm font-semibold">Simpan Form B</button>
+                    <p class="text-xs text-gray-500 mb-4">Isi telaah mandiri Anda. Hasil akan ditampilkan berdampingan dengan telaah bersama observer.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="border border-blue-100 rounded-xl p-4 bg-blue-50/30">
+                            <div class="form-section-title"><i class="fas fa-bullseye"></i> 1. Tujuan Pembelajaran — Apresiasi Kekuatan</div>
+                            <textarea id="guruB1a" class="form-input" rows="3" placeholder="Tuliskan apresiasi kekuatan dari tujuan pembelajaran yang Anda susun..."></textarea>
+                        </div>
+                        <div class="border border-blue-100 rounded-xl p-4 bg-blue-50/30">
+                            <div class="form-section-title"><i class="fas fa-comments"></i> 1b. Tujuan Pembelajaran — Pengayaan & Diskusi Suportif</div>
+                            <textarea id="guruB1b" class="form-input" rows="3" placeholder="Bagian mana dari tujuan pembelajaran yang ingin didiskusikan lebih lanjut?"></textarea>
+                        </div>
+                        <div class="border border-blue-100 rounded-xl p-4 bg-blue-50/30">
+                            <div class="form-section-title"><i class="fas fa-route"></i> 2. Alur Pengalaman Belajar Mendalam</div>
+                            <textarea id="guruB2" class="form-input" rows="3" placeholder="Deskripsikan alur pengalaman belajar yang Anda rancang..."></textarea>
+                        </div>
+                        <div class="border border-blue-100 rounded-xl p-4 bg-blue-50/30">
+                            <div class="form-section-title"><i class="fas fa-heart"></i> 3. Penerapan Prinsip Pembelajaran Mendalam</div>
+                            <textarea id="guruB3" class="form-input" rows="3" placeholder="Bagaimana Anda menerapkan prinsip Mindful, Meaningful, Joyful?"></textarea>
+                        </div>
+                    </div>
+                    <button onclick="saveFormBGuru()" class="btn-primary mt-4 w-full text-white py-3 rounded-xl text-sm font-semibold">
+                        <i class="fas fa-save mr-2"></i> Simpan Form B
+                    </button>
                 </div>
-                <div class="card-blue p-5">
-                    <span class="badge-blue">Form C</span><h3 class="font-bold mb-3 mt-2">Wawancara</h3>
-                    <div class="space-y-3">
-                        <div class="border-l-4 border-blue-500 pl-4"><label class="text-sm font-semibold">1. Tujuan Supervisi</label><textarea id="guruC1" class="w-full text-sm border border-blue-200 rounded-lg p-3 mt-1" rows="2"></textarea></div>
-                        <div class="border-l-4 border-blue-500 pl-4"><label class="text-sm font-semibold">2. Tujuan Pembelajaran</label><textarea id="guruC2" class="w-full text-sm border border-blue-200 rounded-lg p-3 mt-1" rows="2"></textarea></div>
-                        <div class="border-l-4 border-blue-500 pl-4"><label class="text-sm font-semibold">3. Strategi</label><textarea id="guruC3" class="w-full text-sm border border-blue-200 rounded-lg p-3 mt-1" rows="2"></textarea></div>
+
+                <!-- FORM C -->
+                <div class="form-card mb-4">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="badge-blue">Form C</span>
+                        <h3 class="font-bold text-blue-800">Panduan Wawancara Coaching</h3>
                     </div>
-                    <button onclick="saveFormCGuru()" class="btn-primary mt-4 w-full text-white py-3 rounded-xl text-sm font-semibold">Simpan Form C</button>
+                    <p class="text-xs text-gray-500 mb-4">Isi jawaban Anda atas pertanyaan wawancara coaching berikut.</p>
+                    
+                    <div class="space-y-5">
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <label class="text-sm font-semibold text-gray-800">1. Tujuan Supervisi</label>
+                            <p class="text-xs text-gray-500 italic mb-2">"Bagian mana dari proses mengajar yang paling ingin ditingkatkan?"</p>
+                            <textarea id="guruC1" class="form-input" rows="2"></textarea>
+                        </div>
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <label class="text-sm font-semibold text-gray-800">2. Tujuan Pembelajaran</label>
+                            <p class="text-xs text-gray-500 italic mb-2">"Tujuan apa yang ingin dicapai murid hari ini?"</p>
+                            <textarea id="guruC2" class="form-input" rows="2"></textarea>
+                        </div>
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <label class="text-sm font-semibold text-gray-800">3. Strategi / Model Pembelajaran</label>
+                            <p class="text-xs text-gray-500 italic mb-2">"Strategi apa yang dipilih? Mengapa?"</p>
+                            <textarea id="guruC3" class="form-input" rows="2"></textarea>
+                        </div>
+                    </div>
+                    <button onclick="saveFormCGuru()" class="btn-primary mt-4 w-full text-white py-3 rounded-xl text-sm font-semibold">
+                        <i class="fas fa-save mr-2"></i> Simpan Form C
+                    </button>
                 </div>
             </div>
 
+            <!-- PASCA -->
             <div id="gcontent-pasca" class="gmenu-content hidden">
                 <div class="card-blue p-5 mb-4">
                     <span class="badge-blue">Read-only</span><h3 class="font-bold mb-3 mt-2">Catatan Observer</h3>
@@ -491,24 +617,90 @@
                 </div>
             </div>
 
+            <!-- RTL (DENGAN DROPDOWN BENTUK PENDAMPINGAN) -->
             <div id="gcontent-rtl" class="gmenu-content hidden">
-                <div class="card-blue p-5">
-                    <h2 class="text-sm font-bold uppercase mb-3">RTL</h2>
-                    <div id="rtlInfoGuru" class="bg-blue-50 border-l-4 border-blue-500 p-3 rounded-r-lg mb-4 text-xs text-blue-800">RTL diisi setelah Pasca-Observasi.</div>
+                <div class="form-card">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="bg-green-100 p-2 rounded-lg"><i class="fas fa-tasks text-green-600"></i></div>
+                        <div>
+                            <h2 class="text-sm font-bold uppercase text-gray-800">Rencana Tindak Lanjut (RTL)</h2>
+                            <p class="text-xs text-gray-500">Isi rencana pengembangan Anda setelah sesi supervisi</p>
+                        </div>
+                    </div>
+                    
+                    <div id="rtlInfoGuru" class="bg-yellow-50 border-l-4 border-yellow-500 p-3 rounded-r-lg mb-4 text-xs text-yellow-800">
+                        <i class="fas fa-lock mr-1"></i> Form RTL akan aktif setelah Kepala Sekolah memulai tahap Pasca-Observasi.
+                    </div>
+
                     <div class="overflow-x-auto">
                         <table class="rtl-table">
-                            <thead><tr><th>No</th><th>Area</th><th>Bentuk</th><th>Aktivitas</th><th>Waktu</th><th>Ukuran</th></tr></thead>
-                            <tbody><tr>
-                                <td class="text-center font-semibold">1</td>
-                                <td><textarea id="rtlArea" rows="2"></textarea></td>
-                                <td><select id="rtlBentuk"><option value="">--</option><option>Coaching</option><option>Mentoring</option><option>Modeling</option><option>Pelatihan Mandiri</option><option>Observasi Rekan Sejawat</option></select></td>
-                                <td><textarea id="rtlAktivitas" rows="2"></textarea></td>
-                                <td><textarea id="rtlWaktu" rows="2"></textarea></td>
-                                <td><textarea id="rtlUkuran" rows="2"></textarea></td>
-                            </tr></tbody>
+                            <thead>
+                                <tr>
+                                    <th style="width: 40px;">NO</th>
+                                    <th>AREA PENGEMBANGAN</th>
+                                    <th>BENTUK PENDAMPINGAN</th>
+                                    <th>AKTIVITAS / LANGKAH NYATA</th>
+                                    <th>LINI WAKTU & TARGET</th>
+                                    <th>UKURAN KEBERHASILAN</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center font-semibold">1</td>
+                                    <td><textarea id="rtlArea" rows="2" placeholder="Contoh: Pemberian umpan balik yang efektif"></textarea></td>
+                                    <td>
+                                        <select id="rtlBentuk" class="w-full text-xs border border-gray-300 rounded p-1">
+                                            <option value="">-- Pilih --</option>
+                                            <option>Coaching</option>
+                                            <option>Mentoring</option>
+                                            <option>Modeling</option>
+                                            <option>Pelatihan Mandiri</option>
+                                            <option>Observasi Rekan Sejawat</option>
+                                        </select>
+                                    </td>
+                                    <td><textarea id="rtlAktivitas" rows="2" placeholder="Contoh: Menerapkan teknik bertanya HOTS di 3 pertemuan"></textarea></td>
+                                    <td><textarea id="rtlWaktu" rows="2" placeholder="Contoh: 2 minggu"></textarea></td>
+                                    <td><textarea id="rtlUkuran" rows="2" placeholder="Contoh: 80% murid aktif bertanya"></textarea></td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
-                    <button onclick="saveRTL(event)" class="btn-green mt-4 w-full text-white py-3 rounded-xl text-sm font-semibold">Simpan RTL</button>
+                    <button onclick="saveRTL(event)" class="btn-green mt-4 w-full text-white py-3 rounded-xl text-sm font-semibold">
+                        <i class="fas fa-save mr-2"></i> Simpan RTL
+                    </button>
+                </div>
+            </div>
+
+            <!-- MODUL AJAR (UPLOAD PDF) -->
+            <div id="gcontent-modul" class="gmenu-content hidden">
+                <div class="form-card">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="bg-red-100 p-2 rounded-lg"><i class="fas fa-file-pdf text-red-600"></i></div>
+                        <div>
+                            <h2 class="text-sm font-bold uppercase text-gray-800">Unggah Modul Ajar</h2>
+                            <p class="text-xs text-gray-500">Unggah file PDF modul ajar Anda untuk ditelaah oleh Observer</p>
+                        </div>
+                    </div>
+                    
+                    <div class="upload-area" onclick="document.getElementById('fileModulAjar').click()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Klik untuk memilih file PDF atau seret ke sini</p>
+                        <p class="text-xs text-gray-400 mt-1">Maksimal 5MB</p>
+                    </div>
+                    <input type="file" id="fileModulAjar" accept=".pdf" class="hidden" onchange="handleFileUpload(event)">
+                    
+                    <div id="filePreviewContainer" class="hidden mt-4">
+                        <p class="text-xs font-semibold text-gray-600 mb-2">File Terunggah:</p>
+                        <div class="file-preview">
+                            <i class="fas fa-file-pdf"></i>
+                            <span id="fileNamePreview">modul_ajar.pdf</span>
+                            <a id="fileLinkPreview" href="#" target="_blank" class="text-blue-600 text-xs font-semibold hover:underline"><i class="fas fa-external-link-alt"></i> Lihat</a>
+                        </div>
+                    </div>
+                    
+                    <button onclick="uploadModulAjar()" class="btn-primary mt-4 w-full text-white py-3 rounded-xl text-sm font-semibold" id="btnUploadModul">
+                        <i class="fas fa-upload mr-2"></i> Unggah Modul Ajar
+                    </button>
                 </div>
             </div>
         </main>
@@ -659,11 +851,11 @@
         let currentSekolahList = [];
         let currentSuperAdmin = null;
         let currentGuruData = null;
-        let dbSekolahAvailable = false;  // ← flag: apakah tabel sekolah bisa diakses
+        let dbSekolahAvailable = false;
         let dbGuruAvailable = false;
         
         const FALLBACK_SA = { nama: 'Super Admin', password: 'admin123' };
-        const LS_SEKOLAH_KEY = 'supervisi_sekolah_list'; // localStorage untuk sekolah
+        const LS_SEKOLAH_KEY = 'supervisi_sekolah_list';
         const DEFAULT_SEKOLAH = {
             id: 'default',
             nama: 'SMP Negeri 1 Maiwa',
@@ -742,18 +934,11 @@
             } catch (err) {
                 console.warn('⚠️ Tabel sekolah tidak bisa diakses:', err.message);
                 dbSekolahAvailable = false;
-                // Pakai localStorage
                 currentSekolahList = getLocalSekolah();
                 if (currentSekolahList.length === 0) {
                     currentSekolahList = [{ ...DEFAULT_SEKOLAH }];
                     saveLocalSekolah(currentSekolahList);
                 }
-            }
-            
-            // Kalau DB kosong, tambah default
-            if (dbSekolahAvailable && currentSekolahList.length === 0) {
-                // Jangan auto insert, biar Super Admin yang tambah
-                // Tapi untuk login dropdown, kasih fallback
             }
             
             updateSekolahDropdowns();
@@ -1323,7 +1508,10 @@
                         </div>
                         <span class="status-badge ${status.class}">${status.label}</span>
                     </div>
-                    <button onclick="openSesiFromRekap('${g.id}')" class="w-full btn-primary text-white py-2 rounded-lg text-xs font-semibold"><i class="fas fa-folder-open mr-1"></i> Buka Sesi</button>
+                    <div class="flex gap-2">
+                        <button onclick="openSesiFromRekap('${g.id}')" class="flex-1 btn-primary text-white py-2 rounded-lg text-xs font-semibold"><i class="fas fa-folder-open mr-1"></i> Buka Sesi</button>
+                        <button onclick="downloadGuruExcel('${g.id}')" class="btn-excel text-white py-2 px-3 rounded-lg text-xs font-semibold" title="Unduh Excel Lengkap"><i class="fas fa-file-excel"></i> Excel</button>
+                    </div>
                 </div>`;
             }).join('');
         }
@@ -1365,6 +1553,7 @@
             document.getElementById('ttdObserverNip').textContent = 'NIP. ' + (currentObserver?.nip || '-');
             await loadFormBAndC(guru.id);
             await loadRTLViewObserver(guru.id);
+            await loadModulAjarForObserver(guru.id);
             document.getElementById('sesiAktif').classList.remove('hidden');
             if (guru.status === 'observasi') switchTab('observasi');
             else if (guru.status === 'selesai') switchTab('pasca');
@@ -1459,6 +1648,31 @@
                     </div>`;
             } catch (e) {
                 container.innerHTML = `<p class="text-xs text-red-500">Gagal muat RTL.</p>`;
+            }
+        }
+        
+        async function loadModulAjarForObserver(guruId) {
+            const container = document.getElementById('observerModulAjarView');
+            if (!container) return;
+            try {
+                const { data, error } = await _supabase.from('guru').select('modul_ajar_url, modul_ajar_nama').eq('id', guruId).single();
+                if (error) throw error;
+                
+                if (data && data.modul_ajar_url) {
+                    container.innerHTML = `
+                        <div class="file-preview">
+                            <i class="fas fa-file-pdf"></i>
+                            <span>${escapeHtml(data.modul_ajar_nama || 'Modul_Ajar.pdf')}</span>
+                            <a href="${data.modul_ajar_url}" target="_blank" class="btn-primary text-white px-3 py-1.5 rounded-lg text-xs font-semibold">
+                                <i class="fas fa-download mr-1"></i> Unduh
+                            </a>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = `<p class="text-xs text-gray-500 italic">Guru belum mengunggah modul ajar.</p>`;
+                }
+            } catch (e) {
+                container.innerHTML = `<p class="text-xs text-gray-500 italic">Gagal memuat modul ajar.</p>`;
             }
         }
         
@@ -1561,6 +1775,13 @@
                 await loadGuruFormBAndC(guru.id);
                 await loadRefleksiGuru(guru.id);
                 await renderRTLListGuru(guru.id);
+                if (guru.modul_ajar_url) {
+                    document.getElementById('fileNamePreview').textContent = guru.modul_ajar_nama || 'Modul_Ajar.pdf';
+                    document.getElementById('fileLinkPreview').href = guru.modul_ajar_url;
+                    document.getElementById('filePreviewContainer').classList.remove('hidden');
+                } else {
+                    document.getElementById('filePreviewContainer').classList.add('hidden');
+                }
             } catch (err) { showToast('Gagal: ' + err.message, 'error'); }
             finally { hideLoading(); }
         }
@@ -1756,6 +1977,286 @@
                 if (menu === 'pra') loadGuruFormBAndC(currentGuruData.id);
                 if (menu === 'pasca') { loadRefleksiGuru(currentGuruData.id); loadGuruFormBAndC(currentGuruData.id); }
                 if (menu === 'rtl') renderRTLListGuru(currentGuruData.id);
+                if (menu === 'modul') {
+                    if (currentGuruData.modul_ajar_url) {
+                        document.getElementById('fileNamePreview').textContent = currentGuruData.modul_ajar_nama || 'Modul_Ajar.pdf';
+                        document.getElementById('fileLinkPreview').href = currentGuruData.modul_ajar_url;
+                        document.getElementById('filePreviewContainer').classList.remove('hidden');
+                    } else {
+                        document.getElementById('filePreviewContainer').classList.add('hidden');
+                    }
+                }
+            }
+        }
+        
+        let selectedFile = null;
+        
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            if (file.type !== 'application/pdf') {
+                showToast('Hanya file PDF yang diizinkan!', 'error');
+                return;
+            }
+            if (file.size > 5 * 1024 * 1024) {
+                showToast('Ukuran file maksimal 5MB!', 'error');
+                return;
+            }
+            selectedFile = file;
+            document.getElementById('fileNamePreview').textContent = file.name;
+            document.getElementById('filePreviewContainer').classList.remove('hidden');
+        }
+        
+        async function uploadModulAjar() {
+            if (!selectedFile) {
+                showToast('Pilih file terlebih dahulu!', 'error');
+                return;
+            }
+            const auth = JSON.parse(localStorage.getItem('supervisi_auth'));
+            if (!auth?.guruId) return;
+            
+            showLoading();
+            try {
+                const fileExt = selectedFile.name.split('.').pop();
+                const fileName = `${auth.guruId}_${Date.now()}.${fileExt}`;
+                const filePath = `modul_ajar/${fileName}`;
+                
+                const { data: uploadData, error: uploadError } = await _supabase.storage
+                    .from('modul_ajar')
+                    .upload(filePath, selectedFile, { cacheControl: '3600', upsert: true });
+                    
+                if (uploadError) throw uploadError;
+                
+                const { data: urlData } = _supabase.storage.from('modul_ajar').getPublicUrl(filePath);
+                const publicUrl = urlData.publicUrl;
+                
+                const { error: dbError } = await _supabase.from('guru').update({ 
+                    modul_ajar_url: publicUrl,
+                    modul_ajar_nama: selectedFile.name 
+                }).eq('id', auth.guruId);
+                
+                if (dbError) throw dbError;
+                
+                showToast('✅ Modul Ajar berhasil diunggah!', 'success');
+                document.getElementById('fileLinkPreview').href = publicUrl;
+                document.getElementById('fileLinkPreview').classList.remove('hidden');
+                currentGuruData.modul_ajar_url = publicUrl;
+                currentGuruData.modul_ajar_nama = selectedFile.name;
+                
+            } catch (err) {
+                console.error(err);
+                showToast('Gagal mengunggah: ' + err.message, 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+        
+        // ============================================================
+        // FITUR BARU: UNDUH EXCEL LENGKAP PER GURU
+        // ============================================================
+        async function downloadGuruExcel(guruId) {
+            const guru = currentGuruList.find(g => g.id === guruId);
+            if (!guru) { showToast('Data guru tidak ditemukan!', 'error'); return; }
+            
+            showLoading();
+            try {
+                // 1. Ambil data observasi (semua indikator)
+                const { data: obsData } = await _supabase.from('observasi').select('*').eq('guru_id', guruId);
+                const obsMap = {};
+                (obsData || []).forEach(row => { obsMap[row.indikator_id] = row.catatan; });
+                
+                // 2. Ambil data RTL
+                const { data: rtlData } = await _supabase.from('rtl').select('*').eq('guru_id', guruId).maybeSingle();
+                
+                // 3. Susun data Form A
+                const fa = guru.form_a || {};
+                const identitasRows = [
+                    ['FORM A: IDENTITAS & KESEPAKATAN', ''],
+                    ['Nama Pendidik', fa.nama || guru.nama || '-'],
+                    ['NIP', fa.nip || '-'],
+                    ['Mata Pelajaran', fa.mapel || '-'],
+                    ['Kelas / Semester', fa.kelas || '-'],
+                    ['Materi / Topik', fa.materi || '-'],
+                    ['Hari / Tanggal Pra-Obs', fa.tanggal || '-'],
+                    ['Alokasi Waktu', fa.alokasi || '-'],
+                    ['Jadwal Observasi Kelas', fa.jadwal || '-'],
+                    ['Observer / Kepala Sekolah', fa.observer || currentObserver?.nama || '-'],
+                    ['Fokus Utama Coaching', fa.fokus || 'Pembelajaran Mendalam (Deep Learning)'],
+                    []
+                ];
+                
+                // 4. Susun data Form B
+                const formBRows = [
+                    ['FORM B: TELAAH MANDIRI PERENCANAAN', ''],
+                    ['1. Tujuan Pembelajaran — Apresiasi Kekuatan', obsMap['b1a_guru'] || '-'],
+                    ['1b. Pengayaan & Diskusi Suportif', obsMap['b1b_guru'] || '-'],
+                    ['2. Alur Pengalaman Belajar Mendalam', obsMap['b2_guru'] || '-'],
+                    ['3. Penerapan Prinsip Pembelajaran Mendalam', obsMap['b3_guru'] || '-'],
+                    [],
+                    ['TELAAH BERSAMA OBSERVER', ''],
+                    ['1. Tujuan Pembelajaran — Apresiasi Kekuatan', obsMap['b1a_obs'] || '-'],
+                    ['1b. Pengayaan & Diskusi Suportif', obsMap['b1b_obs'] || '-'],
+                    ['2. Alur Pengalaman Belajar Mendalam', obsMap['b2_obs'] || '-'],
+                    ['3. Penerapan Prinsip Pembelajaran Mendalam', obsMap['b3_obs'] || '-'],
+                    []
+                ];
+                
+                // 5. Susun data Form C
+                const formCRows = [
+                    ['FORM C: WAWANCARA COACHING', ''],
+                    ['1. Tujuan Supervisi', obsMap['c1'] || '-'],
+                    ['2. Tujuan Pembelajaran', obsMap['c2'] || '-'],
+                    ['3. Strategi / Model Pembelajaran', obsMap['c3'] || '-'],
+                    []
+                ];
+                
+                // 6. Susun data Observasi (49 indikator)
+                const indikatorLabels = {
+                    1: 'Salam & kondisikan fisik/psikis murid',
+                    2: 'Meninjau kesepakatan kelas',
+                    3: 'Asesmen formatif awal (Mindful)',
+                    4: 'Apersepsi',
+                    5: 'Tujuan Pembelajaran',
+                    6: 'Garis besar kegiatan',
+                    7: 'Rencana asesmen & KKTP',
+                    8: 'Manfaat bermakna (Meaningful)',
+                    9: 'Ice Breaking (Joyful)',
+                    10: 'Mindful: Suasana fokus',
+                    11: 'Mindful: Ekspresi emosional',
+                    12: 'Mindful: Diferensiasi',
+                    13: 'Meaningful: Konteks nyata',
+                    14: 'Meaningful: Alasan mengapa',
+                    15: 'Meaningful: Pemahaman konseptual',
+                    16: 'Joyful: Iklim positif',
+                    17: 'Joyful: Metode interaktif',
+                    18: 'Joyful: Apresiasi',
+                    19: 'Memahami: Penjelasan konsep',
+                    20: 'Memahami: Sumber belajar',
+                    21: 'Memahami: Media/alat peraga',
+                    22: 'Memahami: Konstruksi pemahaman',
+                    23: 'Memahami: HOTS',
+                    24: 'Memahami: Ekspresi pemahaman',
+                    25: 'Memahami: Asesmen formatif proses',
+                    26: 'Mengaplikasi: Praktik/simulasi',
+                    27: 'Mengaplikasi: Konteks baru',
+                    28: 'Mengaplikasi: Karya/proyek',
+                    29: 'Merefleksi: Menilai proses',
+                    30: 'Merefleksi: Tantangan & solusi',
+                    31: 'Merefleksi: RTL pengembangan diri',
+                    32: 'Pedagogik: Model inovatif',
+                    33: 'Pedagogik: 6C',
+                    34: 'Pedagogik: Umpan balik',
+                    35: 'Kemitraan: Kolaborasi',
+                    36: 'Kemitraan: Relasi',
+                    37: 'Lingkungan: Tata ruang',
+                    38: 'Lingkungan: Inklusif',
+                    39: 'Lingkungan: Lingkungan sekitar',
+                    40: 'Digital: Teknologi',
+                    41: 'Digital: Media interaktif',
+                    42: 'Rangkuman bersama',
+                    43: 'Refleksi',
+                    44: 'Umpan balik positif',
+                    45: 'Asesmen formatif akhir',
+                    46: 'Tugas pengayaan',
+                    47: 'Info berikutnya',
+                    48: 'Power closing',
+                    49: 'Doa & salam'
+                };
+                
+                const obsRows = [['OBSERVASI KELAS (Catatan Faktual)', '']];
+                for (let i = 1; i <= 49; i++) {
+                    obsRows.push([`Indikator ${i}: ${indikatorLabels[i]}`, obsMap[String(i)] || '-']);
+                }
+                obsRows.push([]);
+                
+                // 7. Susun data Pasca-Observasi
+                const pascaRows = [
+                    ['PASCA-OBSERVASI', ''],
+                    ['APRESIASI & CATATAN OBSERVER', ''],
+                    ['Apresiasi', obsMap['pascaApresiasi'] || '-'],
+                    ['Fokus Diskusi', obsMap['pascaFokus'] || '-'],
+                    ['Tantangan', obsMap['pascaTantangan'] || '-'],
+                    [],
+                    ['REFLEKSI GURU', ''],
+                    ['1. Perasaan', obsMap['pascaRef1'] || '-'],
+                    ['2. Bagian Berhasil', obsMap['pascaRef2'] || '-'],
+                    ['3. Perbaikan', obsMap['pascaRef3'] || '-'],
+                    []
+                ];
+                
+                // 8. Susun data RTL
+                const rtlRows = [
+                    ['RENCANA TINDAK LANJUT (RTL)', ''],
+                    ['No', '1'],
+                    ['Area Pengembangan', rtlData?.area || '-'],
+                    ['Bentuk Pendampingan', rtlData?.bentuk || '-'],
+                    ['Aktivitas / Langkah Nyata', rtlData?.aktivitas || '-'],
+                    ['Lini Waktu & Target', rtlData?.waktu || '-'],
+                    ['Ukuran Keberhasilan', rtlData?.ukuran || '-'],
+                    []
+                ];
+                
+                // 9. Gabungkan semua data
+                const allData = [
+                    [`LAPORAN SUPERVISI COACHING - ${guru.nama.toUpperCase()}`],
+                    [`Sekolah: ${currentSekolah?.nama || '-'}`],
+                    [`Observer: ${currentObserver?.nama || '-'}`],
+                    [`Tanggal Unduh: ${new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}`],
+                    [`Status: ${getStatusLabel(guru.status).label}`],
+                    [],
+                    ...identitasRows,
+                    ...formBRows,
+                    ...formCRows,
+                    ...obsRows,
+                    ...pascaRows,
+                    ...rtlRows
+                ];
+                
+                // 10. Buat Worksheet
+                const ws = XLSX.utils.aoa_to_sheet(allData);
+                
+                // 11. Atur lebar kolom
+                ws['!cols'] = [
+                    { wch: 45 },  // Kolom A: Label / Pertanyaan
+                    { wch: 70 }   // Kolom B: Jawaban / Catatan
+                ];
+                
+                // 12. Atur style header (bold) - opsional
+                const range = XLSX.utils.decode_range(ws['!ref']);
+                for (let R = range.s.r; R <= range.e.r; R++) {
+                    const cellA = ws[XLSX.utils.encode_cell({ r: R, c: 0 })];
+                    if (cellA && typeof cellA.v === 'string' && (
+                        cellA.v.startsWith('FORM') || 
+                        cellA.v.startsWith('OBSERVASI') || 
+                        cellA.v.startsWith('PASCA') || 
+                        cellA.v.startsWith('RENCANA') || 
+                        cellA.v.startsWith('TELAAH') || 
+                        cellA.v.startsWith('REFLEKSI') || 
+                        cellA.v.startsWith('APRESIASI') ||
+                        cellA.v.startsWith('LAPORAN')
+                    )) {
+                        cellA.s = { font: { bold: true, sz: 12 } };
+                    }
+                }
+                
+                // 13. Buat Workbook & Simpan
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'Laporan Supervisi');
+                
+                // Nama file: Laporan_Supervisi_NamaGuru_Tanggal.xlsx
+                const safeName = guru.nama.replace(/[^a-zA-Z0-9]/g, '_');
+                const dateStr = new Date().toISOString().split('T')[0];
+                const fileName = `Laporan_Supervisi_${safeName}_${dateStr}.xlsx`;
+                
+                XLSX.writeFile(wb, fileName);
+                
+                showToast('✅ File Excel berhasil diunduh!', 'success');
+                
+            } catch (err) {
+                console.error('Error download excel:', err);
+                showToast('Gagal mengunduh Excel: ' + err.message, 'error');
+            } finally {
+                hideLoading();
             }
         }
         
@@ -1769,7 +2270,6 @@
         async function loadSekolahListSA() {
             showLoading();
             try {
-                // Coba load dari DB
                 let fromDb = false;
                 try {
                     const { data, error } = await _supabase.from('sekolah').select('*').order('nama');
@@ -1777,21 +2277,18 @@
                         currentSekolahList = data;
                         dbSekolahAvailable = true;
                         fromDb = true;
-                        // Sync ke localStorage
                         saveLocalSekolah(currentSekolahList);
                     }
                 } catch (e) {
                     console.warn('Load sekolah DB error:', e.message);
                 }
                 
-                // Kalau DB gagal, pakai localStorage
                 if (!fromDb) {
                     dbSekolahAvailable = false;
                     currentSekolahList = getLocalSekolah();
                     updateDbWarning();
                 }
                 
-                // Hitung statistik
                 let totalGuru = 0, proses = 0, selesai = 0;
                 if (dbSekolahAvailable) {
                     for (const s of currentSekolahList) {
@@ -1897,7 +2394,6 @@
             errBox.classList.add('hidden');
             
             try {
-                // Coba simpan ke DB
                 let savedToDb = false;
                 let dbErrorMsg = '';
                 if (dbSekolahAvailable) {
@@ -1916,7 +2412,6 @@
                     }
                 }
                 
-                // Kalau DB gagal atau tidak tersedia → simpan ke localStorage
                 if (!savedToDb) {
                     const localList = getLocalSekolah();
                     if (id && id !== 'default') {
@@ -1924,11 +2419,9 @@
                         if (idx >= 0) {
                             localList[idx] = { ...localList[idx], ...payload };
                         } else {
-                            // Cari di currentSekolahList (mungkin dari DB)
                             localList.push({ id: id, ...payload });
                         }
                     } else {
-                        // Generate ID unik untuk localStorage
                         const newId = 'local_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
                         localList.push({ id: newId, ...payload });
                     }
@@ -1981,7 +2474,6 @@
                     }
                 }
                 
-                // Selalu hapus dari localStorage juga
                 const localList = getLocalSekolah().filter(s => s.id !== id);
                 saveLocalSekolah(localList);
                 
