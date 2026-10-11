@@ -95,6 +95,75 @@
         .file-preview i { color: #2563eb; font-size: 18px; }
         .file-preview span { font-size: 12px; color: #1e40af; font-weight: 600; flex: 1; }
         
+        /* ============ SPLIT VIEW PANEL (MODUL AJAR) ============ */
+        .split-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 35%;
+            min-width: 380px;
+            max-width: 560px;
+            height: 100vh;
+            background: white;
+            border-left: 2px solid #dbeafe;
+            box-shadow: -8px 0 24px rgba(37, 99, 235, 0.15);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 80;
+            display: flex;
+            flex-direction: column;
+        }
+        .split-panel.open { transform: translateX(0); }
+        .split-panel-header {
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+            color: white;
+            padding: 10px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            min-height: 52px;
+        }
+        .split-panel-body {
+            flex: 1;
+            overflow: hidden;
+            background: #f1f5f9;
+            position: relative;
+        }
+        .split-panel-body iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+        }
+        .split-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.35);
+            backdrop-filter: blur(1px);
+            display: none;
+            z-index: 75;
+        }
+        .split-overlay.active { display: block; }
+        
+        /* Di layar lebar: geser main ke kiri saat panel terbuka */
+        @media (min-width: 1024px) {
+            body.split-open main {
+                margin-right: 35%;
+                transition: margin-right 0.3s ease;
+            }
+        }
+        
+        /* Di HP (<1024px): panel full-screen, overlay tampil */
+        @media (max-width: 1023px) {
+            .split-panel {
+                width: 100%;
+                min-width: 0;
+                max-width: 100%;
+            }
+            body.split-open main { margin-right: 0; }
+        }
+        
         @media print { .no-print { display: none !important; } body { background: white; } .card-blue { box-shadow: none; border: 1px solid #e5e7eb; } }
     </style>
 </head>
@@ -193,6 +262,32 @@
         </header>
 
         <main class="max-w-5xl mx-auto p-4 mb-24">
+
+            <!-- ============ SPLIT VIEW PANEL (MODUL AJAR) ============ -->
+            <div id="splitOverlay" class="split-overlay" onclick="closeSplitView()"></div>
+            <div id="splitPanel" class="split-panel no-print">
+                <div class="split-panel-header">
+                    <div class="flex items-center gap-2 min-w-0 flex-1">
+                        <i class="fas fa-file-pdf text-sm flex-shrink-0"></i>
+                        <p class="font-semibold text-sm truncate" id="splitPanelTitle">Modul Ajar</p>
+                    </div>
+                    <div class="flex items-center gap-1 flex-shrink-0">
+                        <a id="splitPanelDownload" href="#" download class="bg-white/20 hover:bg-white/30 p-2 rounded-lg text-white transition" title="Unduh">
+                            <i class="fas fa-download text-xs"></i>
+                        </a>
+                        <a id="splitPanelOpenTab" href="#" target="_blank" rel="noopener noreferrer" class="bg-white/20 hover:bg-white/30 p-2 rounded-lg text-white transition" title="Buka di tab baru">
+                            <i class="fas fa-external-link-alt text-xs"></i>
+                        </a>
+                        <button onclick="closeSplitView()" class="bg-white/20 hover:bg-white/30 p-2 rounded-lg text-white transition" title="Tutup (Esc)">
+                            <i class="fas fa-times text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="split-panel-body">
+                    <iframe id="splitPanelIframe" src="" title="Modul Ajar"></iframe>
+                </div>
+            </div>
+            
             <div id="dbWarning" class="alert-box hidden">
                 <i class="fas fa-exclamation-triangle mr-1"></i> <strong>Mode Demo:</strong> Tabel <code>sekolah</code> belum ada di Supabase. Data sekolah disimpan di <strong>localStorage browser</strong> sementara. Untuk produksi, minta Super Admin jalankan SQL migrasi.
             </div>
@@ -1651,21 +1746,39 @@
             }
         }
         
+        // ============================================================
+        // LOAD MODUL AJAR UNTUK OBSERVER (DENGAN TOMBOL LIHAT SPLIT VIEW)
+        // ============================================================
         async function loadModulAjarForObserver(guruId) {
             const container = document.getElementById('observerModulAjarView');
             if (!container) return;
+            
+            // Tutup split view saat ganti guru
+            closeSplitView();
+            
             try {
                 const { data, error } = await _supabase.from('guru').select('modul_ajar_url, modul_ajar_nama').eq('id', guruId).single();
                 if (error) throw error;
                 
                 if (data && data.modul_ajar_url) {
+                    const fileName = data.modul_ajar_nama || 'Modul_Ajar.pdf';
+                    const fileUrl = data.modul_ajar_url;
                     container.innerHTML = `
                         <div class="file-preview">
                             <i class="fas fa-file-pdf"></i>
-                            <span>${escapeHtml(data.modul_ajar_nama || 'Modul_Ajar.pdf')}</span>
-                            <a href="${data.modul_ajar_url}" target="_blank" class="btn-primary text-white px-3 py-1.5 rounded-lg text-xs font-semibold">
-                                <i class="fas fa-download mr-1"></i> Unduh
-                            </a>
+                            <span>${escapeHtml(fileName)}</span>
+                            <div class="flex gap-2 flex-shrink-0">
+                                <button id="btnLihatModul"
+                                    data-url="${fileUrl}"
+                                    data-name="${fileName}"
+                                    onclick="toggleLihatModul()"
+                                    class="btn-green text-white px-3 py-1.5 rounded-lg text-xs font-semibold">
+                                    <i class="fas fa-eye mr-1"></i> Lihat
+                                </button>
+                                <a href="${fileUrl}" download="${fileName}" class="btn-primary text-white px-3 py-1.5 rounded-lg text-xs font-semibold">
+                                    <i class="fas fa-download mr-1"></i> Unduh
+                                </a>
+                            </div>
                         </div>
                     `;
                 } else {
@@ -1675,6 +1788,107 @@
                 container.innerHTML = `<p class="text-xs text-gray-500 italic">Gagal memuat modul ajar.</p>`;
             }
         }
+        
+        // ============================================================
+        // SPLIT VIEW — MODUL AJAR (OBSERVER)
+        // ============================================================
+        function isMobileView() {
+            return window.innerWidth < 1024;
+        }
+        
+        function isPdfFile(fileName) {
+            return /\.pdf$/i.test(fileName || '');
+        }
+        
+        function toggleLihatModul() {
+            const btn = document.getElementById('btnLihatModul');
+            if (!btn) return;
+            const url = btn.dataset.url || '';
+            const name = btn.dataset.name || 'Modul Ajar';
+            const panel = document.getElementById('splitPanel');
+            
+            // Kalau panel sudah terbuka → tutup
+            if (panel && panel.classList.contains('open')) {
+                closeSplitView();
+                return;
+            }
+            
+            // PDF + laptop → split view
+            if (isPdfFile(name) && !isMobileView()) {
+                openSplitView(url, name);
+            } else {
+                // HP atau bukan PDF → tab baru (fallback)
+                window.open(url, '_blank', 'noopener,noreferrer');
+            }
+        }
+        
+        function openSplitView(fileUrl, fileName) {
+            const panel = document.getElementById('splitPanel');
+            const iframe = document.getElementById('splitPanelIframe');
+            const title = document.getElementById('splitPanelTitle');
+            const btnDl = document.getElementById('splitPanelDownload');
+            const btnTab = document.getElementById('splitPanelOpenTab');
+            const overlay = document.getElementById('splitOverlay');
+            const btnLihat = document.getElementById('btnLihatModul');
+            
+            if (!panel) return;
+            
+            title.textContent = fileName || 'Modul Ajar';
+            btnDl.href = fileUrl;
+            btnDl.download = fileName || 'Modul_Ajar';
+            btnTab.href = fileUrl;
+            
+            // Embed PDF dengan toolbar
+            iframe.src = fileUrl + '#toolbar=1&navpanes=0&view=FitH';
+            
+            panel.classList.add('open');
+            document.body.classList.add('split-open');
+            if (isMobileView()) overlay.classList.add('active');
+            
+            // Ubah tombol jadi "Tutup"
+            if (btnLihat) {
+                btnLihat.innerHTML = '<i class="fas fa-times mr-1"></i> Tutup';
+                btnLihat.classList.remove('btn-green');
+                btnLihat.classList.add('btn-orange');
+            }
+        }
+        
+        function closeSplitView() {
+            const panel = document.getElementById('splitPanel');
+            const iframe = document.getElementById('splitPanelIframe');
+            const overlay = document.getElementById('splitOverlay');
+            const btnLihat = document.getElementById('btnLihatModul');
+            
+            if (!panel || !panel.classList.contains('open')) return;
+            
+            panel.classList.remove('open');
+            document.body.classList.remove('split-open');
+            if (overlay) overlay.classList.remove('active');
+            
+            // Bersihkan iframe setelah animasi (hemat memori)
+            setTimeout(() => { if (iframe) iframe.src = ''; }, 350);
+            
+            // Kembalikan tombol jadi "Lihat"
+            if (btnLihat) {
+                btnLihat.innerHTML = '<i class="fas fa-eye mr-1"></i> Lihat';
+                btnLihat.classList.remove('btn-orange');
+                btnLihat.classList.add('btn-green');
+            }
+        }
+        
+        // Tutup panel dengan tombol Esc
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeSplitView();
+        });
+        
+        // Auto-tutup kalau resize dari laptop ke HP
+        let _splitResizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(_splitResizeTimer);
+            _splitResizeTimer = setTimeout(() => {
+                if (isMobileView()) closeSplitView();
+            }, 200);
+        });
         
         async function updateStatusSesi(newStatus) {
             if (!currentSesiId) return;
@@ -2021,13 +2235,15 @@
                 const fileName = `${auth.guruId}_${Date.now()}.${fileExt}`;
                 const filePath = `modul_ajar/${fileName}`;
                 
+                // ✅ BUCKET SUDAH DISESUAIKAN: modul_ajar → modul-ajar
                 const { data: uploadData, error: uploadError } = await _supabase.storage
-                    .from('modul_ajar')
+                    .from('modul-ajar')
                     .upload(filePath, selectedFile, { cacheControl: '3600', upsert: true });
                     
                 if (uploadError) throw uploadError;
                 
-                const { data: urlData } = _supabase.storage.from('modul_ajar').getPublicUrl(filePath);
+                // ✅ BUCKET SUDAH DISESUAIKAN: modul_ajar → modul-ajar
+                const { data: urlData } = _supabase.storage.from('modul-ajar').getPublicUrl(filePath);
                 const publicUrl = urlData.publicUrl;
                 
                 const { error: dbError } = await _supabase.from('guru').update({ 
@@ -2060,15 +2276,12 @@
             
             showLoading();
             try {
-                // 1. Ambil data observasi (semua indikator)
                 const { data: obsData } = await _supabase.from('observasi').select('*').eq('guru_id', guruId);
                 const obsMap = {};
                 (obsData || []).forEach(row => { obsMap[row.indikator_id] = row.catatan; });
                 
-                // 2. Ambil data RTL
                 const { data: rtlData } = await _supabase.from('rtl').select('*').eq('guru_id', guruId).maybeSingle();
                 
-                // 3. Susun data Form A
                 const fa = guru.form_a || {};
                 const identitasRows = [
                     ['FORM A: IDENTITAS & KESEPAKATAN', ''],
@@ -2085,7 +2298,6 @@
                     []
                 ];
                 
-                // 4. Susun data Form B
                 const formBRows = [
                     ['FORM B: TELAAH MANDIRI PERENCANAAN', ''],
                     ['1. Tujuan Pembelajaran — Apresiasi Kekuatan', obsMap['b1a_guru'] || '-'],
@@ -2101,7 +2313,6 @@
                     []
                 ];
                 
-                // 5. Susun data Form C
                 const formCRows = [
                     ['FORM C: WAWANCARA COACHING', ''],
                     ['1. Tujuan Supervisi', obsMap['c1'] || '-'],
@@ -2110,7 +2321,6 @@
                     []
                 ];
                 
-                // 6. Susun data Observasi (49 indikator)
                 const indikatorLabels = {
                     1: 'Salam & kondisikan fisik/psikis murid',
                     2: 'Meninjau kesepakatan kelas',
@@ -2169,7 +2379,6 @@
                 }
                 obsRows.push([]);
                 
-                // 7. Susun data Pasca-Observasi
                 const pascaRows = [
                     ['PASCA-OBSERVASI', ''],
                     ['APRESIASI & CATATAN OBSERVER', ''],
@@ -2184,7 +2393,6 @@
                     []
                 ];
                 
-                // 8. Susun data RTL
                 const rtlRows = [
                     ['RENCANA TINDAK LANJUT (RTL)', ''],
                     ['No', '1'],
@@ -2196,7 +2404,6 @@
                     []
                 ];
                 
-                // 9. Gabungkan semua data
                 const allData = [
                     [`LAPORAN SUPERVISI COACHING - ${guru.nama.toUpperCase()}`],
                     [`Sekolah: ${currentSekolah?.nama || '-'}`],
@@ -2212,16 +2419,9 @@
                     ...rtlRows
                 ];
                 
-                // 10. Buat Worksheet
                 const ws = XLSX.utils.aoa_to_sheet(allData);
+                ws['!cols'] = [{ wch: 45 }, { wch: 70 }];
                 
-                // 11. Atur lebar kolom
-                ws['!cols'] = [
-                    { wch: 45 },  // Kolom A: Label / Pertanyaan
-                    { wch: 70 }   // Kolom B: Jawaban / Catatan
-                ];
-                
-                // 12. Atur style header (bold) - opsional
                 const range = XLSX.utils.decode_range(ws['!ref']);
                 for (let R = range.s.r; R <= range.e.r; R++) {
                     const cellA = ws[XLSX.utils.encode_cell({ r: R, c: 0 })];
@@ -2239,11 +2439,9 @@
                     }
                 }
                 
-                // 13. Buat Workbook & Simpan
                 const wb = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(wb, ws, 'Laporan Supervisi');
                 
-                // Nama file: Laporan_Supervisi_NamaGuru_Tanggal.xlsx
                 const safeName = guru.nama.replace(/[^a-zA-Z0-9]/g, '_');
                 const dateStr = new Date().toISOString().split('T')[0];
                 const fileName = `Laporan_Supervisi_${safeName}_${dateStr}.xlsx`;
