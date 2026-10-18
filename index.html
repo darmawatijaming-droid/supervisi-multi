@@ -800,7 +800,7 @@
                     <div class="upload-area" onclick="document.getElementById('fileModulAjar').click()">
                         <i class="fas fa-cloud-upload-alt"></i>
                         <p>Klik untuk memilih file PDF atau seret ke sini</p>
-                        <p class="text-xs text-gray-400 mt-1">Maksimal 5MB</p>
+                        <p class="text-xs text-gray-400 mt-1">Maksimal 2 MB</p>
                     </div>
                     <input type="file" id="fileModulAjar" accept=".pdf" class="hidden" onchange="handleFileUpload(event)">
                     
@@ -2232,8 +2232,8 @@
                 showToast('Hanya file PDF yang diizinkan!', 'error');
                 return;
             }
-            if (file.size > 5 * 1024 * 1024) {
-                showToast('Ukuran file maksimal 5MB!', 'error');
+            if (file.size > 2 * 1024 * 1024) {
+                showToast('Ukuran file maksimal 2MB!', 'error');
                 return;
             }
             selectedFile = file;
@@ -2526,6 +2526,8 @@
             showLoading();
             try {
                 let fromDb = false;
+                let allGuruData = []; // Array untuk menampung semua data guru
+
                 try {
                     const { data, error } = await _supabase.from('sekolah').select('*').order('nama');
                     if (!error && data) {
@@ -2543,47 +2545,52 @@
                     currentSekolahList = getLocalSekolah();
                     updateDbWarning();
                 }
-                
-                let totalGuru = 0, proses = 0, selesai = 0;
+
+                // ✅ OPTIMASI: Ambil SEMUA data guru dalam 1x query (jika DB tersedia)
                 if (dbSekolahAvailable) {
-                    for (const s of currentSekolahList) {
-                        try {
-                            const { count: cGuru } = await _supabase.from('guru').select('*', { count: 'exact', head: true }).eq('sekolah_id', s.id);
-                            totalGuru += (cGuru || 0);
-                            const { count: cProses } = await _supabase.from('guru').select('*', { count: 'exact', head: true }).eq('sekolah_id', s.id).in('status', ['pra', 'observasi']);
-                            proses += (cProses || 0);
-                            const { count: cSelesai } = await _supabase.from('guru').select('*', { count: 'exact', head: true }).eq('sekolah_id', s.id).eq('status', 'selesai');
-                            selesai += (cSelesai || 0);
-                        } catch (e) {}
+                    try {
+                        const { data: gurus, error: errGuru } = await _supabase.from('guru').select('sekolah_id, status');
+                        if (!errGuru && gurus) {
+                            allGuruData = gurus;
+                        }
+                    } catch (e) {
+                        console.warn('Load all guru error:', e.message);
                     }
                 }
+
+                // Hitung statistik secara lokal (instan)
+                let totalGuru = 0, proses = 0, selesai = 0;
+                allGuruData.forEach(g => {
+                    totalGuru++;
+                    if (g.status === 'pra' || g.status === 'observasi') proses++;
+                    if (g.status === 'selesai') selesai++;
+                });
                 
                 document.getElementById('saStatTotalSekolah').textContent = currentSekolahList.length;
                 document.getElementById('saStatTotalGuru').textContent = totalGuru;
                 document.getElementById('saStatProses').textContent = proses;
                 document.getElementById('saStatSelesai').textContent = selesai;
-                await renderSekolahList();
+                
+                await renderSekolahList(allGuruData);
             } catch (err) {
                 console.error(err);
                 showToast('Gagal: ' + err.message, 'error');
             } finally { hideLoading(); }
         }
         
-        async function renderSekolahList() {
+        async function renderSekolahList(allGuruData = []) {
             const container = document.getElementById('sekolahList');
             if (currentSekolahList.length === 0) {
                 container.innerHTML = `<div class="card-blue p-8 text-center"><i class="fas fa-school text-gray-300 text-4xl mb-3"></i><p class="text-gray-500 text-sm">Belum ada sekolah. Klik "Tambah" untuk memulai.</p>${!dbSekolahAvailable ? '<p class="text-xs text-yellow-600 mt-2">⚠️ Data disimpan sementara di browser.</p>' : ''}</div>`;
                 return;
             }
+            
+            // Hitung jumlah guru per sekolah secara lokal
             const counts = {};
-            if (dbSekolahAvailable) {
-                for (const s of currentSekolahList) {
-                    try {
-                        const { count } = await _supabase.from('guru').select('*', { count: 'exact', head: true }).eq('sekolah_id', s.id);
-                        counts[s.id] = count || 0;
-                    } catch (e) { counts[s.id] = 0; }
-                }
-            }
+            allGuruData.forEach(g => {
+                counts[g.sekolah_id] = (counts[g.sekolah_id] || 0) + 1;
+            });
+
             container.innerHTML = currentSekolahList.map(s => {
                 const isLocal = !dbSekolahAvailable;
                 return `
@@ -2779,7 +2786,7 @@
             active.style.borderBottomColor = '#7c3aed';
             active.style.color = '#7c3aed';
             active.style.background = '#f5f3ff';
-            if (menu === 'sekolah') renderSekolahList();
+            if (menu === 'sekolah') renderSekolahList(); // Modifikasi: renderSekolahList sekarang menerima array kosong default
         }
         
         // ============================================================
