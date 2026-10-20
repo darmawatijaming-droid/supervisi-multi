@@ -400,14 +400,14 @@
                         <div class="bg-white border border-blue-200 rounded-xl p-4 mb-4 shadow-sm">
                             <div class="flex justify-between items-center mb-2">
                                 <span class="text-xs font-bold text-gray-700">Progress Pengisian:</span>
-                                <span class="text-xs font-bold text-blue-600" id="obsProgressText">0 / 49</span>
+                                <span class="text-xs font-bold text-blue-600" id="obsProgressText">0 / 29</span>
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-2 mb-3">
                                 <div id="obsProgressBar" class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
                             </div>
                             <div class="flex gap-2">
                                 <button onclick="isiTemplateOtomatis()" class="btn-primary flex-1 text-white py-2 rounded-lg text-xs font-semibold">
-                                    <i class="fas fa-magic mr-1"></i> Isi Template Otomatis (49 Indikator)
+                                    <i class="fas fa-magic mr-1"></i> Isi Template Otomatis (29 Indikator)
                                 </button>
                                 <button onclick="kosongkanTemplate()" class="bg-red-100 text-red-700 hover:bg-red-200 px-3 py-2 rounded-lg text-xs font-semibold transition">
                                     <i class="fas fa-trash-alt mr-1"></i> Kosongkan Semua
@@ -415,8 +415,9 @@
                             </div>
                         </div>
 
+                        <!-- ===== I. KEGIATAN PENDAHULUAN ===== -->
                         <div class="card-blue overflow-hidden mb-3">
-                            <button onclick="toggleAccordion('acc-1')" class="w-full px-5 py-4 bg-gradient-to-r from-blue-50 to-white flex justify-between items-center text-left"><span class="font-bold text-sm text-blue-800">I. KEGIATAN AWAL</span><i class="fas fa-chevron-down text-blue-500"></i></button>
+                            <button onclick="toggleAccordion('acc-1')" class="w-full px-5 py-4 bg-gradient-to-r from-blue-50 to-white flex justify-between items-center text-left"><span class="font-bold text-sm text-blue-800">I. KEGIATAN PENDAHULUAN</span><i class="fas fa-chevron-down text-blue-500"></i></button>
                             <div id="acc-1" class="accordion-content p-5 space-y-4">
                                 <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">1</span> Menyampaikan salam dan mengondisikan fisik serta psikis murid dalam mengawali kegiatan pembelajaran.</p><textarea id="obs_1" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
                                 <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">2</span> Meninjau kembali kesepakatan/keyakinan kelas yang telah disepakati bersama.</p><textarea id="obs_2" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
@@ -429,64 +430,52 @@
                                 <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">9</span> Melakukan kegiatan penyegaran/pemicu semangat (Ice Breaking/KSE) yang menggembirakan <span class="badge-blue ml-1">Joyful</span></p><textarea id="obs_9" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
                             </div>
                         </div>
+
+                        <!-- ===== II. KEGIATAN INTI ===== -->
                         <div class="card-blue overflow-hidden mb-3">
-                            <button onclick="toggleAccordion('acc-2')" class="w-full px-5 py-4 bg-gradient-to-r from-blue-50 to-white flex justify-between items-center text-left"><span class="font-bold text-sm text-blue-800">II. KEGIATAN INTI — PENERAPAN PRINSIP DEEP LEARNING</span><i class="fas fa-chevron-down text-blue-500"></i></button>
+                            <button onclick="toggleAccordion('acc-2')" class="w-full px-5 py-4 bg-gradient-to-r from-blue-50 to-white flex justify-between items-center text-left"><span class="font-bold text-sm text-blue-800">II. KEGIATAN INTI</span><i class="fas fa-chevron-down text-blue-500"></i></button>
                             <div id="acc-2" class="accordion-content p-5 space-y-4">
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">10</span> <span class="badge-blue">Mindful</span> Memfasilitasi suasana belajar yang mendorong kehadiran penuh dan fokus murid.</p><textarea id="obs_10" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">11</span> <span class="badge-blue">Mindful</span> Memberikan ruang bagi murid untuk mengekspresikan kesadaran emosional diri secara terbuka.</p><textarea id="obs_11" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">12</span> <span class="badge-blue">Mindful</span> Memahami diferensiasi kebutuhan belajar dan kesiapan individu murid.</p><textarea id="obs_12" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">13</span> <span class="badge-blue">Meaningful</span> Menghubungkan materi dengan pengalaman nyata, konteks lokal, atau isu aktual.</p><textarea id="obs_13" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">14</span> <span class="badge-blue">Meaningful</span> Mendorong murid menemukan alasan 'mengapa' materi ini penting dipelajari.</p><textarea id="obs_14" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">15</span> <span class="badge-blue">Meaningful</span> Memfasilitasi kegiatan yang menghasilkan pemahaman konseptual yang mendalam.</p><textarea id="obs_15" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">16</span> <span class="badge-blue">Joyful</span> Menciptakan iklim kelas yang positif, ramah, aman, dan bebas dari rasa takut salah.</p><textarea id="obs_16" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">17</span> <span class="badge-blue">Joyful</span> Menggunakan metode interaktif yang memicu antusiasme dan rasa ingin tahu murid.</p><textarea id="obs_17" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">18</span> <span class="badge-blue">Joyful</span> Memberikan apresiasi atas usaha, proses, dan keberanian murid berpartisipasi.</p><textarea id="obs_18" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
+                                <!-- DIMENSI 1 -->
+                                <div class="bg-blue-50 p-3 rounded-lg mb-2"><p class="font-bold text-xs text-blue-800 uppercase">Dimensi 1: Praktik Pedagogis (Fusi Pedagogis & Active Learning)</p></div>
+                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">10</span> Guru memfasilitasi orientasi masalah otentik/kontekstual yang memicu rasa ingin tahu dan penalaran kritis murid.</p><textarea id="obs_10" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
+                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">11</span> Guru menerapkan Scaffolding LKPD Berjenjang sesuai kesiapan belajar murid secara responsif.</p><textarea id="obs_11" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
+                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">12</span> Guru memberikan pertanyaan pemantik terbuka (HOTS) yang mendorong murid mengeksplorasi ide secara mandiri.</p><textarea id="obs_12" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
+
+                                <!-- DIMENSI 2 -->
+                                <div class="bg-blue-50 p-3 rounded-lg mb-2 mt-4"><p class="font-bold text-xs text-blue-800 uppercase">Dimensi 2: Pengalaman Belajar Murid (Memahami, Mengaplikasi, Merefleksi)</p></div>
+                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">13</span> Murid aktif mengkonstruksi pemahaman konsep (MEMAHAMI) melalui diskusi kelompok dan investigasi.</p><textarea id="obs_13" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
+                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">14</span> Murid mampu mengaplikasikan pemahaman (MENGAPLIKASI) dalam pemecahan masalah nyata/produk unjuk kerja.</p><textarea id="obs_14" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
+                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">15</span> Murid melakukan refleksi metakognitif (MEREFLEKSI) atas proses dan hasil belajar yang telah dicapai.</p><textarea id="obs_15" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
+
+                                <!-- DIMENSI 3 -->
+                                <div class="bg-blue-50 p-3 rounded-lg mb-2 mt-4"><p class="font-bold text-xs text-blue-800 uppercase">Dimensi 3: Kemitraan Pembelajaran & Agensi Murid</p></div>
+                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">16</span> Terbangun interaksi saling MEMULIAKAN antara guru-murid dan murid-murid (bahasa verbal/nonverbal positif).</p><textarea id="obs_16" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
+                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">17</span> Guru memfasilitasi Agensi Murid (Voice, Choice, Ownership): murid memilih moda produk LKPD dan aktif berpendapat.</p><textarea id="obs_17" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
+
+                                <!-- DIMENSI 4 -->
+                                <div class="bg-blue-50 p-3 rounded-lg mb-2 mt-4"><p class="font-bold text-xs text-blue-800 uppercase">Dimensi 4: Lingkungan Pembelajaran & Kesadaran (Mindful)</p></div>
+                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">18</span> Tercipta iklim kelas yang aman secara psikologis, inklusif, dan bebas dari rasa takut dihakimi/salah.</p><textarea id="obs_18" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
+                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">19</span> Pengaturan ruang kelas fleksibel mendukung kolaborasi kelompok dan unjuk karya (Gallery Walk).</p><textarea id="obs_19" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
+
+                                <!-- DIMENSI 5 -->
+                                <div class="bg-blue-50 p-3 rounded-lg mb-2 mt-4"><p class="font-bold text-xs text-blue-800 uppercase">Dimensi 5: Pemanfaatan Digital & Suasana Menggembirakan (Joyful)</p></div>
+                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">20</span> Penggunaan alat bantu/media digital interaktif meningkatkan keterlibatan dan pemahaman konsep murid.</p><textarea id="obs_20" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
+                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">21</span> Suasana belajar berlangsung interaktif, kondusif, dan menggembirakan (Joyful Learning).</p><textarea id="obs_21" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
                             </div>
                         </div>
+
+                        <!-- ===== III. KEGIATAN PENUTUP ===== -->
                         <div class="card-blue overflow-hidden mb-3">
-                            <button onclick="toggleAccordion('acc-3')" class="w-full px-5 py-4 bg-gradient-to-r from-blue-50 to-white flex justify-between items-center text-left"><span class="font-bold text-sm text-blue-800">III. KEGIATAN INTI — PENGALAMAN BELAJAR (MEMAHAMI, MENGAPLIKASI, MEREFLEKSI)</span><i class="fas fa-chevron-down text-blue-500"></i></button>
+                            <button onclick="toggleAccordion('acc-3')" class="w-full px-5 py-4 bg-gradient-to-r from-blue-50 to-white flex justify-between items-center text-left"><span class="font-bold text-sm text-blue-800">III. KEGIATAN PENUTUP</span><i class="fas fa-chevron-down text-blue-500"></i></button>
                             <div id="acc-3" class="accordion-content p-5 space-y-4">
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">19</span> <span class="badge-blue">Memahami</span> Menyampaikan penjelasan konsep secara runtut, jelas, dan mudah dipahami.</p><textarea id="obs_19" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">20</span> <span class="badge-blue">Memahami</span> Menggunakan beragam sumber belajar (visual, auditori, kinestetik/digital).</p><textarea id="obs_20" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">21</span> <span class="badge-blue">Memahami</span> Memanfaatkan media/alat peraga konkret untuk memperjelas konsep abstrak.</p><textarea id="obs_21" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">22</span> <span class="badge-blue">Memahami</span> Mendorong murid aktif mengonstruksi pemahaman sendiri melalui eksplorasi.</p><textarea id="obs_22" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">23</span> <span class="badge-blue">Memahami</span> Mengajukan pertanyaan pemantik berpikir tingkat tinggi (HOTS).</p><textarea id="obs_23" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">24</span> <span class="badge-blue">Memahami</span> Memberikan kesempatan murid mengekspresikan pemahaman dalam berbagai bentuk.</p><textarea id="obs_24" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">25</span> <span class="badge-blue">Memahami</span> Mengintegrasikan asesmen formatif proses untuk mengecek pemahaman murid.</p><textarea id="obs_25" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">26</span> <span class="badge-blue">Mengaplikasi</span> Memfasilitasi kegiatan praktik, simulasi, atau pemecahan masalah nyata.</p><textarea id="obs_26" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">27</span> <span class="badge-blue">Mengaplikasi</span> Mendorong murid menerapkan konsep pada situasi baru atau konteks lain.</p><textarea id="obs_27" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">28</span> <span class="badge-blue">Mengaplikasi</span> Membimbing murid menghasilkan karya, proyek, atau solusi kontekstual.</p><textarea id="obs_28" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">29</span> <span class="badge-blue">Merefleksi</span> Mendorong murid menilai kembali proses belajar atau strategi yang digunakan.</p><textarea id="obs_29" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">30</span> <span class="badge-blue">Merefleksi</span> Memandu murid mengidentifikasi tantangan dan merumuskan solusi ke depan.</p><textarea id="obs_30" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">31</span> <span class="badge-blue">Merefleksi</span> Membiasakan murid menyusun rencana tindak lanjut pengembangan diri.</p><textarea id="obs_31" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                            </div>
-                        </div>
-                        <div class="card-blue overflow-hidden mb-3">
-                            <button onclick="toggleAccordion('acc-4')" class="w-full px-5 py-4 bg-gradient-to-r from-blue-50 to-white flex justify-between items-center text-left"><span class="font-bold text-sm text-blue-800">IV. KERANGKA PEMBELAJARAN</span><i class="fas fa-chevron-down text-blue-500"></i></button>
-                            <div id="acc-4" class="accordion-content p-5 space-y-4">
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">32</span> <span class="badge-blue">Pedagogik</span> Menerapkan model inovatif (PBL, PjBL, Inquiry, STEM).</p><textarea id="obs_32" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">33</span> <span class="badge-blue">Pedagogik</span> Mengembangkan keterampilan 6C (Critical Thinking, Creativity, Collaboration, Communication, Character, Citizenship).</p><textarea id="obs_33" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">34</span> <span class="badge-blue">Pedagogik</span> Memberikan umpan balik konstruktif dan berkelanjutan saat proses belajar.</p><textarea id="obs_34" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">35</span> <span class="badge-blue">Kemitraan</span> Mendorong kolaborasi antar murid dalam kelompok heterogen.</p><textarea id="obs_35" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">36</span> <span class="badge-blue">Kemitraan</span> Membangun relasi kemitraan saling menghargai antara guru dan murid.</p><textarea id="obs_36" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">37</span> <span class="badge-blue">Lingkungan</span> Mengelola tata ruang kelas yang mendukung interaksi aktif dan kolaborasi.</p><textarea id="obs_37" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">38</span> <span class="badge-blue">Lingkungan</span> Mendorong budaya saling mendukung, inklusif, dan menghargai perbedaan.</p><textarea id="obs_38" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">39</span> <span class="badge-blue">Lingkungan</span> Memanfaatkan lingkungan sekitar sekolah sebagai sumber belajar.</p><textarea id="obs_39" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">40</span> <span class="badge-blue">Digital</span> Mengintegrasikan teknologi digital untuk eksplorasi dan kolaborasi.</p><textarea id="obs_40" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">41</span> <span class="badge-blue">Digital</span> Memanfaatkan media interaktif/aplikasi digital untuk memperkaya pengalaman belajar.</p><textarea id="obs_41" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                            </div>
-                        </div>
-                        <div class="card-blue overflow-hidden mb-3">
-                            <button onclick="toggleAccordion('acc-5')" class="w-full px-5 py-4 bg-gradient-to-r from-blue-50 to-white flex justify-between items-center text-left"><span class="font-bold text-sm text-blue-800">V. KEGIATAN PENUTUP PEMBELAJARAN</span><i class="fas fa-chevron-down text-blue-500"></i></button>
-                            <div id="acc-5" class="accordion-content p-5 space-y-4">
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">42</span> Memfasilitasi murid membuat rangkuman/kesimpulan poin utama pembelajaran secara bersama.</p><textarea id="obs_42" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">43</span> Mendorong murid melakukan refleksi tentang perasaan dan keberhasilan belajar hari ini.</p><textarea id="obs_43" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">44</span> Memberikan umpan balik positif atas dinamika dan pencapaian kelas secara umum.</p><textarea id="obs_44" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">45</span> Melaksanakan asesmen formatif akhir untuk mengukur pencapaian tujuan pembelajaran.</p><textarea id="obs_45" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">46</span> Memberikan tugas pengayaan atau literasi tematik yang relevan dan tidak memberatkan.</p><textarea id="obs_46" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">47</span> Informasikan gambaran materi atau rencana kegiatan pada pertemuan berikutnya.</p><textarea id="obs_47" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">48</span> Menutup pembelajaran dengan pesan moral/motivasi (Power Closing).</p><textarea id="obs_48" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
-                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">49</span> Mengakhiri pembelajaran dengan doa dan salam penutup secara santun.</p><textarea id="obs_49" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
+                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">22</span> Memfasilitasi murid membuat rangkuman/kesimpulan poin utama pembelajaran secara bersama.</p><textarea id="obs_22" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
+                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">23</span> Mendorong murid melakukan refleksi tentang perasaan dan keberhasilan belajar hari ini.</p><textarea id="obs_23" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
+                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">24</span> Memberikan umpan balik positif atas dinamika dan pencapaian kelas secara umum.</p><textarea id="obs_24" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
+                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">25</span> Melaksanakan asesmen formatif akhir untuk mengukur pencapaian tujuan pembelajaran.</p><textarea id="obs_25" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
+                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">26</span> Memberikan tugas pengayaan atau literasi tematik yang relevan dan tidak memberatkan.</p><textarea id="obs_26" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
+                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">27</span> Informasikan gambaran materi atau rencana kegiatan pada pertemuan berikutnya.</p><textarea id="obs_27" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
+                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">28</span> Menutup pembelajaran dengan pesan moral/motivasi (Power Closing).</p><textarea id="obs_28" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
+                                <div class="indicator-item border-b border-blue-50 pb-4"><p class="text-sm font-medium mb-2"><span class="badge-blue mr-1">29</span> Mengakhiri pembelajaran dengan doa dan salam penutup secara santun.</p><textarea id="obs_29" class="w-full text-sm border border-blue-200 rounded-lg p-3" rows="2" placeholder="Catatan faktual..."></textarea></div>
                             </div>
                         </div>
                         <button onclick="updateStatusSesi('pasca')" class="btn-primary mt-5 w-full text-white py-3 rounded-xl text-sm font-semibold">Lanjut ke Pasca-Observasi</button>
@@ -1691,7 +1680,7 @@
                 setReadonlyValue('view_c1', map['c1']);
                 setReadonlyValue('view_c2', map['c2']);
                 setReadonlyValue('view_c3', map['c3']);
-                for (let i = 1; i <= 49; i++) {
+                for (let i = 1; i <= 29; i++) {
                     const el = document.getElementById('obs_' + i);
                     if (el) el.value = map[String(i)] || '';
                 }
@@ -1727,7 +1716,7 @@
                 'formB1a': 'b1a_obs', 'formB1b': 'b1b_obs', 'formB2': 'b2_obs', 'formB3': 'b3_obs',
                 'pascaApresiasi': 'pascaApresiasi', 'pascaFokus': 'pascaFokus', 'pascaTantangan': 'pascaTantangan'
             };
-            for (let i = 1; i <= 49; i++) map['obs_' + i] = String(i);
+            for (let i = 1; i <= 29; i++) map['obs_' + i] = String(i);
             Object.keys(map).forEach(id => {
                 const el = document.getElementById(id);
                 if (el && !el.dataset.autosaveAttached) {
@@ -2371,46 +2360,26 @@
                     7: 'Menyampaikan rencana asesmen dan kriteria ketercapaian tujuan pembelajaran.',
                     8: 'Menyampaikan manfaat bermakna dari materi yang dipelajari bagi kehidupan sehari-hari murid (Meaningful).',
                     9: 'Melakukan kegiatan penyegaran/pemicu semangat (Ice Breaking/KSE) yang menggembirakan (Joyful).',
-                    10: 'Mindful: Memfasilitasi suasana belajar yang mendorong kehadiran penuh dan fokus murid.',
-                    11: 'Mindful: Memberikan ruang bagi murid untuk mengekspresikan kesadaran emosional diri secara terbuka.',
-                    12: 'Mindful: Memahami diferensiasi kebutuhan belajar dan kesiapan individu murid.',
-                    13: 'Meaningful: Menghubungkan materi dengan pengalaman nyata, konteks lokal, atau isu aktual.',
-                    14: 'Meaningful: Mendorong murid menemukan alasan \'mengapa\' materi ini penting dipelajari.',
-                    15: 'Meaningful: Memfasilitasi kegiatan yang menghasilkan pemahaman konseptual yang mendalam.',
-                    16: 'Joyful: Menciptakan iklim kelas yang positif, ramah, aman, dan bebas dari rasa takut salah.',
-                    17: 'Joyful: Menggunakan metode interaktif yang memicu antusiasme dan rasa ingin tahu murid.',
-                    18: 'Joyful: Memberikan apresiasi atas usaha, proses, dan keberanian murid berpartisipasi.',
-                    19: 'Memahami: Menyampaikan penjelasan konsep secara runtut, jelas, dan mudah dipahami.',
-                    20: 'Memahami: Menggunakan beragam sumber belajar (visual, auditori, kinestetik/digital).',
-                    21: 'Memahami: Memanfaatkan media/alat peraga konkret untuk memperjelas konsep abstrak.',
-                    22: 'Memahami: Mendorong murid aktif mengonstruksi pemahaman sendiri melalui eksplorasi.',
-                    23: 'Memahami: Mengajukan pertanyaan pemantik berpikir tingkat tinggi (HOTS).',
-                    24: 'Memahami: Memberikan kesempatan murid mengekspresikan pemahaman dalam berbagai bentuk.',
-                    25: 'Memahami: Mengintegrasikan asesmen formatif proses untuk mengecek pemahaman murid.',
-                    26: 'Mengaplikasi: Memfasilitasi kegiatan praktik, simulasi, atau pemecahan masalah nyata.',
-                    27: 'Mengaplikasi: Mendorong murid menerapkan konsep pada situasi baru atau konteks lain.',
-                    28: 'Mengaplikasi: Membimbing murid menghasilkan karya, proyek, atau solusi kontekstual.',
-                    29: 'Merefleksi: Mendorong murid menilai kembali proses belajar atau strategi yang digunakan.',
-                    30: 'Merefleksi: Memandu murid mengidentifikasi tantangan dan merumuskan solusi ke depan.',
-                    31: 'Merefleksi: Membiasakan murid menyusun rencana tindak lanjut pengembangan diri.',
-                    32: 'Pedagogik: Menerapkan model inovatif (PBL, PjBL, Inquiry, STEM).',
-                    33: 'Pedagogik: Mengembangkan keterampilan 6C (Critical Thinking, Creativity, Collaboration, Communication, Character, Citizenship).',
-                    34: 'Pedagogik: Memberikan umpan balik konstruktif dan berkelanjutan saat proses belajar.',
-                    35: 'Kemitraan: Mendorong kolaborasi antar murid dalam kelompok heterogen.',
-                    36: 'Kemitraan: Membangun relasi kemitraan saling menghargai antara guru dan murid.',
-                    37: 'Lingkungan: Mengelola tata ruang kelas yang mendukung interaksi aktif dan kolaborasi.',
-                    38: 'Lingkungan: Mendorong budaya saling mendukung, inklusif, dan menghargai perbedaan.',
-                    39: 'Lingkungan: Memanfaatkan lingkungan sekitar sekolah sebagai sumber belajar.',
-                    40: 'Digital: Mengintegrasikan teknologi digital untuk eksplorasi dan kolaborasi.',
-                    41: 'Digital: Memanfaatkan media interaktif/aplikasi digital untuk memperkaya pengalaman belajar.',
-                    42: 'Memfasilitasi murid membuat rangkuman/kesimpulan poin utama pembelajaran secara bersama.',
-                    43: 'Mendorong murid melakukan refleksi tentang perasaan dan keberhasilan belajar hari ini.',
-                    44: 'Memberikan umpan balik positif atas dinamika dan pencapaian kelas secara umum.',
-                    45: 'Melaksanakan asesmen formatif akhir untuk mengukur pencapaian tujuan pembelajaran.',
-                    46: 'Memberikan tugas pengayaan atau literasi tematik yang relevan dan tidak memberatkan.',
-                    47: 'Informasikan gambaran materi atau rencana kegiatan pada pertemuan berikutnya.',
-                    48: 'Menutup pembelajaran dengan pesan moral/motivasi (Power Closing).',
-                    49: 'Mengakhiri pembelajaran dengan doa dan salam penutup secara santun.'
+                    10: 'Guru memfasilitasi orientasi masalah otentik/kontekstual yang memicu rasa ingin tahu dan penalaran kritis murid.',
+                    11: 'Guru menerapkan Scaffolding LKPD Berjenjang sesuai kesiapan belajar murid secara responsif.',
+                    12: 'Guru memberikan pertanyaan pemantik terbuka (HOTS) yang mendorong murid mengeksplorasi ide secara mandiri.',
+                    13: 'Murid aktif mengkonstruksi pemahaman konsep (MEMAHAMI) melalui diskusi kelompok dan investigasi.',
+                    14: 'Murid mampu mengaplikasikan pemahaman (MENGAPLIKASI) dalam pemecahan masalah nyata/produk unjuk kerja.',
+                    15: 'Murid melakukan refleksi metakognitif (MEREFLEKSI) atas proses dan hasil belajar yang telah dicapai.',
+                    16: 'Terbangun interaksi saling MEMULIAKAN antara guru-murid dan murid-murid (bahasa verbal/nonverbal positif).',
+                    17: 'Guru memfasilitasi Agensi Murid (Voice, Choice, Ownership): murid memilih moda produk LKPD dan aktif berpendapat.',
+                    18: 'Tercipta iklim kelas yang aman secara psikologis, inklusif, dan bebas dari rasa takut dihakimi/salah.',
+                    19: 'Pengaturan ruang kelas fleksibel mendukung kolaborasi kelompok dan unjuk karya (Gallery Walk).',
+                    20: 'Penggunaan alat bantu/media digital interaktif meningkatkan keterlibatan dan pemahaman konsep murid.',
+                    21: 'Suasana belajar berlangsung interaktif, kondusif, dan menggembirakan (Joyful Learning).',
+                    22: 'Memfasilitasi murid membuat rangkuman/kesimpulan poin utama pembelajaran secara bersama.',
+                    23: 'Mendorong murid melakukan refleksi tentang perasaan dan keberhasilan belajar hari ini.',
+                    24: 'Memberikan umpan balik positif atas dinamika dan pencapaian kelas secara umum.',
+                    25: 'Melaksanakan asesmen formatif akhir untuk mengukur pencapaian tujuan pembelajaran.',
+                    26: 'Memberikan tugas pengayaan atau literasi tematik yang relevan dan tidak memberatkan.',
+                    27: 'Informasikan gambaran materi atau rencana kegiatan pada pertemuan berikutnya.',
+                    28: 'Menutup pembelajaran dengan pesan moral/motivasi (Power Closing).',
+                    29: 'Mengakhiri pembelajaran dengan doa dan salam penutup secara santun.'
                 };
 
                 const sheet2Data = [
@@ -2419,7 +2388,7 @@
                     [],
                     ['NO', 'ASPEK SUPERVISI', 'CATATAN FAKTUAL']
                 ];
-                for (let i = 1; i <= 49; i++) {
+                for (let i = 1; i <= 29; i++) {
                     sheet2Data.push([i, indikatorLabels[i], obsMap[String(i)] || '-']);
                 }
                 const ws2 = XLSX.utils.aoa_to_sheet(sheet2Data);
@@ -2790,10 +2759,10 @@
         }
         
         // ============================================================
-        // FITUR AUTO-FILL 49 INDIKATOR (TANPA AI & TANPA TOMBOL STATUS)
+        // FITUR AUTO-FILL 29 INDIKATOR (TANPA AI & TANPA TOMBOL STATUS)
         // ============================================================
         
-        // Data 49 Template Kalimat
+        // Data 29 Template Kalimat
         const TEMPLATE_INDIKATOR = {
             1: "Guru membuka pembelajaran dengan salam hangat, menyapa murid, dan mengondisikan fisik/psikis murid. [Tambahkan bukti faktual yang teramati...]",
             2: "Guru mengingatkan kembali keyakinan kelas yang telah disepakati bersama (saling menghargai, mendengarkan, kerja sama). [Tambahkan bukti...]",
@@ -2804,46 +2773,26 @@
             7: "Guru memaparkan langkah-langkah kegiatan pembelajaran dan kriteria penilaian yang mencerminkan tujuan. [Sebutkan alur...]",
             8: "Guru mengelola kesadaran sosial dan emosional (KSE) murid untuk fokus (misal: teknik STOP). [Jelaskan prosesnya...]",
             9: "Guru mengajak murid berdinamika / ice breaking ringan terkait materi (Joyful). [Sebutkan jenis ice breaking...]",
-            10: "Guru senantiasa mengingatkan murid hadir penuh selama kegiatan pembelajaran (Mindful). [Berikan contoh interaksi...]",
-            11: "Guru mengarahkan dan memotivasi murid untuk belajar secara antusias dan aktif. [Sebutkan bentuk motivasi...]",
-            12: "Guru menggunakan variasi strategi dan metode mengajar agar murid memahami materi (diferensiasi). [Sebutkan variasinya...]",
-            13: "Guru menyampaikan materi disertai contoh kontekstual yang sesuai kehidupan murid (Meaningful). [Sebutkan contoh...]",
-            14: "Guru mengarahkan murid untuk belajar melalui pengalaman nyata. [Jelaskan pengalaman belajarnya...]",
-            15: "Murid merefleksikan makna materi dalam bentuk lisan, tulisan, gambar, atau simbol. [Jelaskan hasil refleksi murid...]",
-            16: "Guru membangun komunikasi pembelajaran interaktif dan dialogis dengan murid (Joyful). [Berikan contoh tanya jawab...]",
-            17: "Guru menggunakan strategi yang membuat peserta didik antusias dan gembira (misal: studi kasus, permainan). [Sebutkan strateginya...]",
-            18: "Guru menggunakan ice breaker / kuis ringan di sela pembelajaran untuk meningkatkan konsentrasi. [Sebutkan kuisnya...]",
-            19: "Guru menjelaskan materi secara sistematis dari mudah ke sulit, konkret ke abstrak (Memahami). [Jelaskan alurnya...]",
-            20: "Guru menggunakan beragam sumber belajar dan mendorong murid belajar dari berbagai sumber. [Sebutkan sumbernya...]",
-            21: "Guru menggunakan alat peraga/media pembelajaran yang relevan dengan materi. [Sebutkan medianya...]",
-            22: "Guru menerapkan pendekatan konstruktivisme, menyajikan materi melalui pengalaman nyata. [Jelaskan proses konstruksinya...]",
-            23: "Guru mendorong murid berpikir kritis melalui aktif bertanya, berpendapat, dan diskusi kelompok. [Berikan contoh pertanyaan...]",
-            24: "Guru memberi kesempatan murid mengekspresikan pemahaman melalui beragam cara (lisan, tulisan, visual). [Sebutkan bentuknya...]",
-            25: "Guru melakukan asesmen formatif dalam proses pembelajaran. [Jelaskan bentuk asesmennya...]",
-            26: "Guru membangun suasana belajar yang menyenangkan dan bermakna bagi murid. [Deskripsikan suasananya...]",
-            27: "Guru memberi kesempatan murid belajar melalui observasi, eksperimen, atau praktik langsung. [Jelaskan praktiknya...]",
-            28: "Guru memberi kesempatan murid menerapkan materi secara kontekstual sesuai kehidupan nyata (Mengaplikasi). [Berikan contoh...]",
-            29: "Guru memberi kesempatan murid menunjukkan kemampuan melalui demonstrasi, simulasi, atau produk. [Jelaskan presentasi/karya...]",
-            30: "Guru memberi kesempatan murid menyampaikan kesan dan perasaan selama pembelajaran (Merefleksi). [Sebutkan ungkapan murid...]",
-            31: "Guru memberi kesempatan murid merefleksikan materi (hal dikuasai, belum dikuasai, ingin ditingkatkan). [Jelaskan hasil refleksi...]",
-            32: "Guru menerapkan kegiatan pembelajaran yang mendorong berpikir kritis, HOTS, dan praktik nyata (Pedagogik). [Berikan contoh...]",
-            33: "Guru menerapkan beragam strategi pembelajaran inovatif (PBL, PjBL, Inquiry, dll). [Sebutkan modelnya...]",
-            34: "Guru melibatkan murid sebagai subjek belajar sekaligus rekan belajar (Kemitraan). [Jelaskan bentuk kolaborasinya...]",
-            35: "Guru melibatkan rekan kerja (team teaching), ahli, atau praktisi dalam menunjang materi. [Sebutkan keterlibatannya...]",
-            36: "Guru membangun budaya belajar positif untuk mencapai tujuan dan profil lulusan (Lingkungan). [Jelaskan budayanya...]",
-            37: "Guru mendesain ruang belajar yang aman dan nyaman untuk belajar murid. [Deskripsikan tata ruangnya...]",
-            38: "Guru memanfaatkan lingkungan sekitar sebagai sumber belajar murid. [Sebutkan pemanfaatan lingkungan...]",
-            39: "Guru memadukan ruang belajar luring dan daring (blended learning). [Jelaskan perpaduannya...]",
-            40: "Guru memanfaatkan perangkat digital untuk menunjang pembelajaran (efektif, interaktif, menarik) (Digital). [Sebutkan perangkatnya...]",
-            41: "Guru terampil/cakap dalam menggunakan perangkat digital dalam pembelajaran. [Jelaskan kecakapannya...]",
-            42: "Guru memfasilitasi dan membimbing murid menyimpulkan pembelajaran (Penutup). [Tuliskan kesimpulan murid...]",
-            43: "Guru memfasilitasi murid merefleksi proses dan hasil pembelajaran serta penilaian diri. [Jelaskan refleksinya...]",
-            44: "Guru memberikan umpan balik konstruktif untuk semua murid berdasarkan temuan pembelajaran. [Sebutkan umpan baliknya...]",
-            45: "Guru melakukan asesmen formatif akhir untuk mengukur ketercapaian tujuan pembelajaran. [Jelaskan bentuk asesmennya...]",
-            46: "Guru memberikan penugasan membaca literatur/tematik untuk memperkuat pemahaman. [Sebutkan tugasnya...]",
-            47: "Guru menyampaikan fokus materi yang akan dipelajari pada pertemuan selanjutnya. [Sebutkan materi selanjutnya...]",
-            48: "Guru menyampaikan pesan moral atau nasihat bermakna bagi murid (power closing). [Tuliskan pesan guru...]",
-            49: "Guru mengajak murid berdoa bersama dan menutup pembelajaran dengan salam. [Jelaskan penutupannya...]"
+            10: "Guru memfasilitasi orientasi masalah otentik/kontekstual yang memicu rasa ingin tahu dan penalaran kritis murid. [Berikan contoh...]",
+            11: "Guru menerapkan Scaffolding LKPD Berjenjang sesuai kesiapan belajar murid secara responsif. [Jelaskan LKPD-nya...]",
+            12: "Guru memberikan pertanyaan pemantik terbuka (HOTS) yang mendorong murid mengeksplorasi ide secara mandiri. [Sebutkan pertanyaannya...]",
+            13: "Murid aktif mengkonstruksi pemahaman konsep (MEMAHAMI) melalui diskusi kelompok dan investigasi. [Berikan bukti...]",
+            14: "Murid mampu mengaplikasikan pemahaman (MENGAPLIKASI) dalam pemecahan masalah nyata/produk unjuk kerja. [Berikan contoh...]",
+            15: "Murid melakukan refleksi metakognitif (MEREFLEKSI) atas proses dan hasil belajar yang telah dicapai. [Jelaskan refleksinya...]",
+            16: "Terbangun interaksi saling MEMULIAKAN antara guru-murid dan murid-murid (bahasa verbal/nonverbal positif). [Berikan contoh...]",
+            17: "Guru memfasilitasi Agensi Murid (Voice, Choice, Ownership): murid memilih moda produk LKPD dan aktif berpendapat. [Berikan bukti...]",
+            18: "Tercipta iklim kelas yang aman secara psikologis, inklusif, dan bebas dari rasa takut dihakimi/salah. [Deskripsikan...]",
+            19: "Pengaturan ruang kelas fleksibel mendukung kolaborasi kelompok dan unjuk karya (Gallery Walk). [Sebutkan tata ruang...]",
+            20: "Penggunaan alat bantu/media digital interaktif meningkatkan keterlibatan dan pemahaman konsep murid. [Sebutkan medianya...]",
+            21: "Suasana belajar berlangsung interaktif, kondusif, dan menggembirakan (Joyful Learning). [Deskripsikan suasana...]",
+            22: "Guru memfasilitasi murid membuat rangkuman/kesimpulan poin utama pembelajaran. [Tuliskan kesimpulan murid...]",
+            23: "Guru mendorong murid melakukan refleksi tentang perasaan dan keberhasilan belajar hari ini. [Jelaskan refleksinya...]",
+            24: "Guru memberikan umpan balik positif atas dinamika dan pencapaian kelas secara umum. [Sebutkan umpan baliknya...]",
+            25: "Guru melaksanakan asesmen formatif akhir untuk mengukur pencapaian tujuan pembelajaran. [Jelaskan bentuk asesmennya...]",
+            26: "Guru memberikan tugas pengayaan atau literasi tematik yang relevan dan tidak memberatkan. [Sebutkan tugasnya...]",
+            27: "Guru menginformasikan gambaran materi atau rencana kegiatan pada pertemuan berikutnya. [Sebutkan materinya...]",
+            28: "Guru menutup pembelajaran dengan pesan moral/motivasi (Power Closing). [Tuliskan pesan guru...]",
+            29: "Guru mengakhiri pembelajaran dengan doa dan salam penutup secara santun. [Jelaskan penutupannya...]"
         };
 
         // 1. Fungsi Isi Template Otomatis (Tanpa Menimpa yang Sudah Ada)
@@ -2853,7 +2802,7 @@
             let terisi = 0;
             let dilewati = 0;
             
-            for (let i = 1; i <= 49; i++) {
+            for (let i = 1; i <= 29; i++) {
                 const ta = document.getElementById('obs_' + i);
                 if (ta) {
                     // Cek jika kosong
@@ -2873,10 +2822,10 @@
         // 2. Fungsi Kosongkan Semua Template
         async function kosongkanTemplate() {
             if (!currentSesiId) return;
-            if (!confirm('Yakin ingin mengosongkan SEMUA 49 indikator? Tindakan ini tidak bisa dibatalkan.')) return;
+            if (!confirm('Yakin ingin mengosongkan SEMUA 29 indikator? Tindakan ini tidak bisa dibatalkan.')) return;
             
             showLoading();
-            for (let i = 1; i <= 49; i++) {
+            for (let i = 1; i <= 29; i++) {
                 const ta = document.getElementById('obs_' + i);
                 if (ta) {
                     ta.value = '';
@@ -2891,16 +2840,16 @@
         // 3. Fungsi Update Progress Bar (Menghitung berapa yang ada isinya)
         function updateProgress() {
             let terisi = 0;
-            for (let i = 1; i <= 49; i++) {
+            for (let i = 1; i <= 29; i++) {
                 const ta = document.getElementById('obs_' + i);
                 if (ta && ta.value.trim() !== '') terisi++;
             }
-            const pct = Math.round((terisi / 49) * 100);
+            const pct = Math.round((terisi / 29) * 100);
             const bar = document.getElementById('obsProgressBar');
             const txt = document.getElementById('obsProgressText');
             if (bar && txt) {
                 bar.style.width = pct + '%';
-                txt.textContent = terisi + ' / 49';
+                txt.textContent = terisi + ' / 29';
                 if (pct === 100) {
                     bar.classList.remove('bg-blue-600');
                     bar.classList.add('bg-green-500');
@@ -2911,9 +2860,9 @@
             }
         }
 
-        // 4. Pasang Event Listener Input ke 49 Textarea untuk Update Progress
+        // 4. Pasang Event Listener Input ke 29 Textarea untuk Update Progress
         function attachProgressListeners() {
-            for (let i = 1; i <= 49; i++) {
+            for (let i = 1; i <= 29; i++) {
                 const ta = document.getElementById('obs_' + i);
                 if (ta && !ta.dataset.progressAttached) {
                     ta.dataset.progressAttached = 'true';
